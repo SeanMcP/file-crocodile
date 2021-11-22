@@ -1,3 +1,5 @@
+import buildTree from "./tree-builder.js";
+
 (function () {
   const directoryEl = document.getElementById("directory");
   const messageEl = document.getElementById("message");
@@ -5,60 +7,7 @@
   const terminalForm = document.getElementById("terminal");
   const titleEl = document.getElementById("title");
 
-  const TREE = {
-    name: "root",
-    children: [
-      {
-        name: "Red",
-        children: [
-          {
-            name: "Pepper",
-          },
-          {
-            name: "Tomato",
-            children: [
-              {
-                name: "Dog",
-              },
-              {
-                name: "Cat",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: "Orange",
-        children: [
-          {
-            name: "Carrot",
-          },
-          {
-            name: "Pumpkin",
-          },
-        ],
-      },
-      {
-        name: "Yellow",
-        children: [
-          {
-            name: "Corn",
-          },
-          {
-            name: "Squash",
-            children: [
-              {
-                name: "Dolphin",
-              },
-              {
-                name: "Owl",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  };
+  const TREE = buildTree();
 
   function searchTree(node, name) {
     if (!name || name === "root") return [TREE, null];
@@ -99,6 +48,16 @@
       } else {
         item = document.createElement("button");
       }
+
+      if (node.secret) {
+        item.addEventListener("click", (event) => {
+          event.preventDefault();
+          setTimeout(() => {
+            alert("You found the secret!");
+          }, 0);
+        });
+      }
+
       item.classList.add("item");
       item.textContent = node.name;
       directoryEl.appendChild(item);
